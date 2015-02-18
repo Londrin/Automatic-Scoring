@@ -15,7 +15,7 @@ using namespace std;
 
 // Function Prototypes.
 int Menu();
-void Setup(int firstTime, int& numQuestions, vector<char>& quizAnswers, int& numStudents, vector<string>& studentNames);
+void Setup(bool firstTime, int& numQuestions, vector<char>& quizAnswers, int& numStudents, vector<string>& studentNames);
 void Grade(int numQuestions, vector<char> quizAnswers, int numStudents, vector<string> studentNames);
 int GetInt(string message);
 char GetChar(string message);
@@ -25,16 +25,16 @@ int main(int argc, const char * argv[]) {
 	int numQuestions, numStudents;
 	vector<char> quizAnswers;
 	vector<string> studentNames;
-	int numOfLoops = 0;
+	bool firstTime = true;
 	bool exit = false;
 	int menuSelection;
 
 	// Calling setup. This is to force the first entry into the program to always go into setup.
 	// Future calls use the menu system.
-	Setup(numOfLoops, numQuestions, quizAnswers, numStudents, studentNames);
-
-	// I am using numOfLoops to determine an entry message to the user. (To describe the program)
-	++numOfLoops;
+	Setup(firstTime, numQuestions, quizAnswers, numStudents, studentNames);
+	
+	// Setting firstTime to false, as settings have been set once already.
+	firstTime = false;
 
 	// Exit is set to true if the user wants to exit the program.
 	while (!exit) {
@@ -50,7 +50,7 @@ int main(int argc, const char * argv[]) {
 		else if (menuSelection == 2)
 		{
 			// Calling setup again. This allows the user to change students, or in the case of a mistake.
-			Setup(numOfLoops, numQuestions, quizAnswers, numStudents, studentNames);
+			Setup(firstTime, numQuestions, quizAnswers, numStudents, studentNames);
 		}
 		else
 		{
@@ -58,7 +58,6 @@ int main(int argc, const char * argv[]) {
 			Grade(numQuestions, quizAnswers, numStudents, studentNames);
 		}
 
-		++numOfLoops;
 	}
 
 	cout << "Thank you for using the Automatic Scoring System!" << endl;
@@ -108,7 +107,7 @@ void Setup(int firstTime, int& numQuestions, vector<char>& quizAnswers, int& num
 		studentNames.clear();
 
 	// This is to semi-explain the program so someone can understand what it does.
-	if (firstTime == 0) {
+	if (firstTime) {
 		cout << "Welcome to the Automatic Scoring System setup!" << endl;
 		cout << "Since this is the first time you have entered setup,\n" <<
 			"This system is designed to automatically score multiple\n" <<
